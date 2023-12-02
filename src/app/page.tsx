@@ -1,14 +1,16 @@
+import { Button } from "@nextui-org/button"
+
 import type { Metadata } from "next"
 import type { FC } from "react"
 
 export const metadata: Metadata = {
-	title: "Template",
-	description: "Welcome to Next.js",
+	title: "WieBetaaldBier",
+	description: "Handig om bierkosten te verdelen",
 }
 
 const Page: FC = () => (
 	<>
-		<span>Hello World</span>
+		<Button color="danger">Hello</Button>
 	</>
 )
 

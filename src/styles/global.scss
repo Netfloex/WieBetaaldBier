@@ -1,7 +1,4 @@
-body {
-	margin: 0;
-	background-color: #222;
-	color: white;
-	color-scheme: dark;
-	font-family: sans-serif;
-}
+/* stylelint-disable scss/at-rule-no-unknown */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
