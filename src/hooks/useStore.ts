@@ -1,14 +1,17 @@
 import { create } from "zustand"
 
-interface User {
+export interface User {
 	name: string
 	beers: number
 	paid: number
+	id: number
 }
 
-interface State {
-	addUser: () => void
+export interface State {
+	index: number
+	createEmptyUser: () => User
 	users: User[]
+	addUser: () => void
 	setBeers: (index: number, beers: string) => void
 	setPaid: (index: number, paid: string) => void
 	setName: (index: number, name: string) => void
@@ -17,15 +20,20 @@ interface State {
 	totalPaid: () => number
 }
 
-const emptyUser = (): User => ({ name: "", beers: 0, paid: 0 })
+const emptyUser = (id: number): User => ({ id, name: "", beers: 0, paid: 0 })
 
 export const useStore = create<State>(
 	(set, get) =>
 		({
-			users: [emptyUser()],
+			index: 0,
+			createEmptyUser(): User {
+				set((state) => ({ index: state.index + 1 }))
+				return emptyUser(get().index)
+			},
+			users: [emptyUser(0)],
 			addUser(): void {
 				set((state) => {
-					const users = [...state.users, emptyUser()]
+					const users = [...state.users, get().createEmptyUser()]
 					return { users }
 				})
 			},
@@ -36,7 +44,7 @@ export const useStore = create<State>(
 					return existingUser
 				}
 
-				const newUser = emptyUser()
+				const newUser = get().createEmptyUser()
 				set((state) => {
 					const users = [...state.users, newUser]
 					return { users }
@@ -51,7 +59,9 @@ export const useStore = create<State>(
 					set((state) => {
 						const user = state.getUser(index)
 						user.beers = parsedBeers
-						return { users: [...state.users] }
+						return {
+							users: [...state.users],
+						}
 					})
 				}
 			},
