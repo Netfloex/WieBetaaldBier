@@ -1,4 +1,4 @@
-import { Button } from "@nextui-org/button"
+import { Dashboard } from "src/app/(dashboard)/Dashboard"
 
 import type { Metadata } from "next"
 import type { FC } from "react"
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 const Page: FC = () => (
 	<>
-		<Button color="danger">Hello</Button>
+		<Dashboard />
 	</>
 )
 
