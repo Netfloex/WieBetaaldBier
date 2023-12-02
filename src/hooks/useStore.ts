@@ -55,7 +55,7 @@ export const useStore = create<State>(
 			setBeers: (index: number, beers: string): void => {
 				const parsedBeers = parseInt(beers)
 
-				if (!isNaN(parsedBeers)) {
+				if (!isNaN(parsedBeers) || !beers) {
 					set((state) => {
 						const user = state.getUser(index)
 						user.beers = parsedBeers
@@ -68,7 +68,7 @@ export const useStore = create<State>(
 			setPaid: (index: number, paid: string): void => {
 				const parsedPaid = parseFloat(paid)
 
-				if (!isNaN(parsedPaid)) {
+				if (!isNaN(parsedPaid) || !paid) {
 					set((state) => {
 						const user = state.getUser(index)
 						user.paid = parsedPaid

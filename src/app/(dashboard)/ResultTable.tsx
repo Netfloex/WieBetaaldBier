@@ -7,6 +7,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "@nextui-org/table"
+import { useMemo } from "react"
 
 import { useStore } from "@hooks/useStore"
 
@@ -17,16 +18,24 @@ export const ResultTable: FC = () => {
 	const totalBeers = useStore((s) => s.totalBeers())
 	const pricePerBeer = useStore((s) => s.totalPaid() / s.totalBeers() || 0)
 
-	const data = users.map((user) => {
-		return {
-			...user,
-			name: user.name || `Persoon ${user.id + 1}`,
-			paid: `€${user.paid.toFixed(2)}`,
-			cost: `€${(user.beers * pricePerBeer).toFixed(2)}`,
-			toPay: `€${(user.beers * pricePerBeer - user.paid).toFixed(2)}`,
-			share: `${((user.beers / totalBeers) * 100 || 0).toFixed(2)}%`,
-		}
-	})
+	const data = useMemo(
+		() =>
+			users.map((user) => {
+				return {
+					...user,
+					name: user.name || `Persoon ${user.id + 1}`,
+					paid: `€${user.paid.toFixed(2)}`,
+					cost: `€${(user.beers * pricePerBeer).toFixed(2)}`,
+					toPay: `€${(user.beers * pricePerBeer - user.paid).toFixed(
+						2,
+					)}`,
+					share: `${((user.beers / totalBeers) * 100 || 0).toFixed(
+						2,
+					)}%`,
+				}
+			}),
+		[pricePerBeer, totalBeers, users],
+	)
 
 	const columns = [
 		{

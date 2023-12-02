@@ -15,6 +15,7 @@ export const UserRow: FC<{ index: number }> = ({ index }) => {
 			<div className="flex gap-4">
 				<Input
 					label="Naam"
+					placeholder={`Persoon ${index + 1}`}
 					value={user.name}
 					onValueChange={(val) => setName(index, val)}
 				/>

@@ -17,7 +17,6 @@ export const Dashboard: FC = () => {
 	return (
 		<>
 			<Card className="p-4 m-10">
-				<h1>Dashboard</h1>
 				<div className="flex gap-4 flex-col">
 					{Array.from({ length: userCount }, (_, index) => (
 						<UserRow key={index} index={index} />
@@ -32,9 +31,7 @@ export const Dashboard: FC = () => {
 					</Button>
 				</div>
 			</Card>
-			<Card className="p-4 m-10">
-				<Results />
-			</Card>
+			<Card className="m-10">{userCount > 1 && <Results />}</Card>
 		</>
 	)
 }
