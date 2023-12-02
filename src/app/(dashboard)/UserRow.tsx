@@ -9,6 +9,7 @@ export const UserRow: FC<{ index: number }> = ({ index }) => {
 	const setName = useStore((s) => s.setName)
 	const setBeers = useStore((s) => s.setBeers)
 	const setPaid = useStore((s) => s.setPaid)
+
 	return (
 		<>
 			<div className="flex gap-4">
@@ -25,9 +26,10 @@ export const UserRow: FC<{ index: number }> = ({ index }) => {
 				/>
 				<Input
 					type="number"
-					label="Bieren betaald"
+					label="Al betaald"
 					value={user.paid.toString()}
 					onValueChange={(val) => setPaid(index, val)}
+					startContent={<div className="leading-tight">€</div>}
 				/>
 			</div>
 		</>

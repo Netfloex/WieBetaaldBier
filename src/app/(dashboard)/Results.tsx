@@ -12,12 +12,13 @@ export const Results: FC = () => {
 	return (
 		<>
 			<div>
-				<h1>Results</h1>
-				<p>Total beers: {totalBeers}</p>
-				<p>Total paid: €{totalPaid.toFixed(2)}</p>
-				<p>Price per beer: €{pricePerBeer.toFixed(2)}€</p>
-
-				<ResultTable />
+				<h1 className="text-lg">Totaal</h1>
+				<p>Totaal gedronken: {totalBeers}</p>
+				<p>Totaal betaald: €{totalPaid.toFixed(2)}</p>
+				<p>Prijs per bier: €{pricePerBeer.toFixed(2)}</p>
+				<div className="p-4">
+					<ResultTable />
+				</div>
 			</div>
 		</>
 	)

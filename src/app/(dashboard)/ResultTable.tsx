@@ -24,9 +24,10 @@ export const ResultTable: FC = () => {
 			paid: `€${user.paid.toFixed(2)}`,
 			cost: `€${(user.beers * pricePerBeer).toFixed(2)}`,
 			toPay: `€${(user.beers * pricePerBeer - user.paid).toFixed(2)}`,
-			share: `${((user.beers / totalBeers) * 100).toFixed(2)}%`,
+			share: `${((user.beers / totalBeers) * 100 || 0).toFixed(2)}%`,
 		}
 	})
+
 	const columns = [
 		{
 			key: "name",
@@ -56,7 +57,7 @@ export const ResultTable: FC = () => {
 
 	return (
 		<>
-			<Table layout="fixed">
+			<Table layout="fixed" isStriped removeWrapper>
 				<TableHeader columns={columns}>
 					{(column) => (
 						<TableColumn key={column.key}>
