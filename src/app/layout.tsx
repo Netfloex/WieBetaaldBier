@@ -2,6 +2,8 @@ import "@styles/global.scss"
 
 import { Providers } from "./Providers"
 
+import type { Metadata } from "next"
+
 import { FCC } from "@typings/FCC"
 
 const RootLayout: FCC = ({ children }) => (
@@ -15,5 +17,15 @@ const RootLayout: FCC = ({ children }) => (
 		</body>
 	</html>
 )
+
+export const metadata: Metadata = {
+	applicationName: "WieBetaaldBier",
+	title: {
+		default: "WieBetaaldBier",
+		template: "WieBetaaldBier",
+	},
+	description: "Handig om bierkosten te verdelen",
+	manifest: "/manifest.json",
+}
 
 export default RootLayout

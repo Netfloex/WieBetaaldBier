@@ -24,7 +24,7 @@ export const Dashboard: FC = () => {
 				</div>
 				<div className="flex justify-center mt-4">
 					<Button
-						onClick={addUser}
+						onPress={addUser}
 						startContent={<MdAdd size={30} />}
 					>
 						Voeg iemand toe
