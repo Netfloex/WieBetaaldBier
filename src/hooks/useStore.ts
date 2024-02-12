@@ -56,6 +56,9 @@ const usePersistedStore = create(
 					const existingUser = get().users[index]
 
 					if (existingUser) {
+						existingUser.beers ??= 0
+						existingUser.paid ??= 0
+
 						return existingUser
 					}
 
@@ -100,12 +103,15 @@ const usePersistedStore = create(
 				},
 				totalBeers: (): number => {
 					return get().users.reduce(
-						(acc, user) => acc + user.beers,
+						(acc, user) => acc + (user.beers || 0),
 						0,
 					)
 				},
 				totalPaid: (): number => {
-					return get().users.reduce((acc, user) => acc + user.paid, 0)
+					return get().users.reduce(
+						(acc, user) => acc + (user.paid || 0),
+						0,
+					)
 				},
 			}) satisfies State,
 		{

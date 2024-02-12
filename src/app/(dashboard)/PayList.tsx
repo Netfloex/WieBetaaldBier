@@ -21,7 +21,7 @@ export const PayList: FC = () => {
 			.map((user) => {
 				return {
 					name: user.name || `Persoon ${user.id + 1}`,
-					toPay: user.beers * pricePerBeer - user.paid,
+					toPay: (user.beers || 0) * pricePerBeer - (user.paid || 0),
 				}
 			})
 			.sort((a, b) => a.toPay - b.toPay)

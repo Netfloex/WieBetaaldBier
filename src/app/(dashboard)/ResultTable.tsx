@@ -21,17 +21,17 @@ export const ResultTable: FC = () => {
 	const data = useMemo(
 		() =>
 			users.map((user) => {
+				const paid = user.paid || 0
+				const beers = user.beers || 0
+
 				return {
 					...user,
+					beers,
 					name: user.name || `Persoon ${user.id + 1}`,
-					paid: `€${user.paid.toFixed(2)}`,
-					cost: `€${(user.beers * pricePerBeer).toFixed(2)}`,
-					toPay: `€${(user.beers * pricePerBeer - user.paid).toFixed(
-						2,
-					)}`,
-					share: `${((user.beers / totalBeers) * 100 || 0).toFixed(
-						2,
-					)}%`,
+					paid: `€${paid.toFixed(2)}`,
+					cost: `€${(beers * pricePerBeer).toFixed(2)}`,
+					toPay: `€${(beers * pricePerBeer - paid).toFixed(2)}`,
+					share: `${((beers / totalBeers) * 100 || 0).toFixed(2)}%`,
 				}
 			}),
 		[pricePerBeer, totalBeers, users],
