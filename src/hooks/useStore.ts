@@ -21,6 +21,7 @@ export interface State {
 	totalBeers: () => number
 	totalPaid: () => number
 	clearUsers: (deleteUsers: boolean) => void
+	deleteUser: (index: number) => void
 }
 
 const emptyUser = (id: number): User => ({ id, name: "", beers: 0, paid: 0 })
@@ -37,6 +38,7 @@ const initialState = {
 	totalBeers: () => 0,
 	totalPaid: () => 0,
 	clearUsers(): void {},
+	deleteUser: () => {},
 } as const satisfies State
 
 const usePersistedStore = create(
@@ -136,6 +138,14 @@ const usePersistedStore = create(
 							return { users }
 						})
 					}
+				},
+				deleteUser(index: number): void {
+					set((state) => {
+						const users = state.users.filter(
+							(user) => user.id !== index,
+						)
+						return { users }
+					})
 				},
 			}) satisfies State,
 		{
