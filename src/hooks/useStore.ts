@@ -20,6 +20,7 @@ export interface State {
 	getUser: (index: number) => User
 	totalBeers: () => number
 	totalPaid: () => number
+	clearUsers: (deleteUsers: boolean) => void
 }
 
 const emptyUser = (id: number): User => ({ id, name: "", beers: 0, paid: 0 })
@@ -35,6 +36,7 @@ const initialState = {
 	getUser: () => emptyUser(0),
 	totalBeers: () => 0,
 	totalPaid: () => 0,
+	clearUsers(): void {},
 } as const satisfies State
 
 const usePersistedStore = create(
@@ -44,6 +46,7 @@ const usePersistedStore = create(
 				...initialState,
 				createEmptyUser(): User {
 					set((state) => ({ index: state.index + 1 }))
+
 					return emptyUser(get().index)
 				},
 				addUser(): void {
@@ -112,6 +115,27 @@ const usePersistedStore = create(
 						(acc, user) => acc + (user.paid || 0),
 						0,
 					)
+				},
+				clearUsers(deleteUsers): void {
+					if (deleteUsers) {
+						set((state) => {
+							state.users = [emptyUser(0)]
+							state.index = 0
+							console.log(state)
+
+							return {}
+						})
+						console.log(get())
+					} else {
+						set((state) => {
+							const users = state.users.map((user) => {
+								user.beers = 0
+								user.paid = 0
+								return user
+							})
+							return { users }
+						})
+					}
 				},
 			}) satisfies State,
 		{

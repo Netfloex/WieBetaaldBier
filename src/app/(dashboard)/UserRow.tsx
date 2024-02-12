@@ -1,11 +1,11 @@
 import { Input } from "@nextui-org/input"
 
-import { useStore } from "@hooks/useStore"
+import { User, useStore } from "@hooks/useStore"
 
 import type { FC } from "react"
 
-export const UserRow: FC<{ index: number }> = ({ index }) => {
-	const user = useStore((s) => s.getUser(index))
+export const UserRow: FC<{ user: User }> = ({ user }) => {
+	const index = user.id
 	const setName = useStore((s) => s.setName)
 	const setBeers = useStore((s) => s.setBeers)
 	const setPaid = useStore((s) => s.setPaid)

@@ -1,13 +1,14 @@
 "use client"
 
-import { Card } from "@nextui-org/card"
+import { Card, CardHeader } from "@nextui-org/card"
 import { Button } from "@nextui-org/react"
 import { MdAdd } from "react-icons/md"
 
 import { useStore } from "@hooks/useStore"
 
+import { ClearAllUsersButton } from "./ClearAllUsersButton"
 import { Results } from "./Results"
-import { UserRow } from "./UserRow"
+import { UserRows } from "./UserRows"
 
 import type { FC } from "react"
 
@@ -17,10 +18,13 @@ export const Dashboard: FC = () => {
 	return (
 		<>
 			<Card className="p-4 m-10">
+				<CardHeader>Gebruikers</CardHeader>
+				<div className="mb-4 h-10 flex items-center space-x-4">
+					<ClearAllUsersButton />
+					{/* <Divider orientation="vertical" /> */}
+				</div>
 				<div className="flex gap-4 flex-col">
-					{Array.from({ length: userCount }, (_, index) => (
-						<UserRow key={index} index={index} />
-					))}
+					<UserRows />
 				</div>
 				<div className="flex justify-center mt-4">
 					<Button
