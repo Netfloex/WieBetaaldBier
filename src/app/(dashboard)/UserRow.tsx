@@ -1,8 +1,7 @@
 import { Input } from "@nextui-org/input"
 import { Button } from "@nextui-org/react"
-import { Tooltip } from "@nextui-org/tooltip"
 import { useCallback } from "react"
-import { MdDelete } from "react-icons/md"
+import { MdClose } from "react-icons/md"
 
 import { User, useStore } from "@hooks/useStore"
 
@@ -21,26 +20,16 @@ export const UserRow: FC<{ user: User }> = ({ user }) => {
 	}, [deleteUserFunc, index])
 
 	return (
-		<Tooltip
-			content={
-				<>
-					<Button
-						color="danger"
-						isIconOnly
-						className="-mt-10"
-						onClick={deleteUser}
-					>
-						<MdDelete size={20} />
-					</Button>
-				</>
-			}
-			containerPadding={0}
-			placement="right-start"
-			classNames={{
-				content: "bg-transparent shadow-none",
-			}}
-			offset={-30}
-		>
+		<div className="relative group">
+			<Button
+				color="danger"
+				isIconOnly
+				radius="full"
+				className="z-10 overflow-visible absolute -top-3 -right-3 min-w-0 w-7 min-h-0 h-7 opacity-0  group-hover:opacity-100 transition-opacity"
+				onClick={deleteUser}
+			>
+				<MdClose size={15} />
+			</Button>
 			<div className="flex gap-4">
 				<Input
 					label="Naam"
@@ -62,6 +51,6 @@ export const UserRow: FC<{ user: User }> = ({ user }) => {
 					startContent={<div className="leading-tight">€</div>}
 				/>
 			</div>
-		</Tooltip>
+		</div>
 	)
 }
