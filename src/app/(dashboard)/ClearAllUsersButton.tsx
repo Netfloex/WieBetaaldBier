@@ -58,7 +58,7 @@ export const ClearAllUsersButton: FC = () => {
 									Verwijder ook de gebruikerslijst
 								</Checkbox>
 								<div className="flex justify-end space-x-2 mt-4">
-									<Button onClick={clear} color="danger">
+									<Button onPress={clear} color="danger">
 										Verwijder
 									</Button>
 								</div>

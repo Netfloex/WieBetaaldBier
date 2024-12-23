@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react"
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
 
@@ -41,7 +40,7 @@ const initialState = {
 	deleteUser: () => {},
 } as const satisfies State
 
-const usePersistedStore = create(
+export const useStore = create(
 	persist<State>(
 		(set, get) =>
 			({
@@ -150,25 +149,9 @@ const usePersistedStore = create(
 			}) satisfies State,
 		{
 			name: "beerStorage",
+			// skipHydration: true,
 		},
 	),
 )
-
-export const useStore = <T>(selector: (state: State) => T): T => {
-	const [ready, setReady] = useState(false)
-	const zustandState = usePersistedStore((persistedState) =>
-		selector(persistedState),
-	)
-
-	useEffect(() => {
-		setReady(true)
-	}, [])
-
-	if (ready) {
-		return zustandState
-	}
-
-	return selector(initialState)
-}
 
 export default useStore

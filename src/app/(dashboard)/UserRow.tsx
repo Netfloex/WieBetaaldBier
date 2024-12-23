@@ -26,7 +26,7 @@ export const UserRow: FC<{ user: User }> = ({ user }) => {
 				isIconOnly
 				radius="full"
 				className="z-10 overflow-visible absolute -top-3 -right-3 min-w-0 w-7 min-h-0 h-7 opacity-0  group-hover:opacity-100 transition-opacity"
-				onClick={deleteUser}
+				onPress={deleteUser}
 			>
 				<MdClose size={15} />
 			</Button>
