@@ -1,7 +1,7 @@
 "use client"
 
-import { Card, CardHeader } from "@nextui-org/card"
-import { Button } from "@nextui-org/react"
+import { Card, CardHeader } from "@heroui/card"
+import { Button } from "@heroui/react"
 import { MdAdd } from "react-icons/md"
 import { useShallow } from "zustand/react/shallow"
 

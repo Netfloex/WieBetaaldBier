@@ -1,5 +1,5 @@
-import { Input } from "@nextui-org/input"
-import { Button } from "@nextui-org/react"
+import { Input } from "@heroui/input"
+import { Button } from "@heroui/react"
 import { useCallback } from "react"
 import { MdClose } from "react-icons/md"
 
