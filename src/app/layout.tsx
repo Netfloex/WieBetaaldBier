@@ -25,7 +25,6 @@ export const metadata: Metadata = {
 		template: "WieBetaaldBier",
 	},
 	description: "Handig om bierkosten te verdelen",
-	manifest: "/manifest.json",
 }
 
 export default RootLayout

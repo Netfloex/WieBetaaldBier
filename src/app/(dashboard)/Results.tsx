@@ -14,7 +14,7 @@ export const Results: FC = () => {
 
 	return (
 		<>
-			<div className="flex gap-4 flex-col">
+			<div className="flex flex-col gap-4">
 				<div className="p-4">
 					<h1 className="text-lg">Totaal:</h1>
 					<p>Totaal gedronken: {totalBeers}</p>

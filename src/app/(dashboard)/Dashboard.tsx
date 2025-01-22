@@ -3,6 +3,7 @@
 import { Card, CardHeader } from "@nextui-org/card"
 import { Button } from "@nextui-org/react"
 import { MdAdd } from "react-icons/md"
+import { useShallow } from "zustand/react/shallow"
 
 import { useStore } from "@hooks/useStore"
 
@@ -13,20 +14,22 @@ import { UserRows } from "./UserRows"
 import type { FC } from "react"
 
 export const Dashboard: FC = () => {
-	const [userCount, addUser] = useStore((s) => [s.users.length, s.addUser])
+	const [userCount, addUser] = useStore(
+		useShallow((s) => [s.users.length, s.addUser]),
+	)
 
 	return (
 		<>
-			<Card className="p-4 m-10">
+			<Card className="m-10 p-4">
 				<CardHeader>Gebruikers</CardHeader>
-				<div className="mb-4 h-10 flex items-center space-x-4">
+				<div className="mb-4 flex h-10 items-center space-x-4">
 					<ClearAllUsersButton />
 					{/* <Divider orientation="vertical" /> */}
 				</div>
-				<div className="flex gap-4 flex-col">
+				<div className="flex flex-col gap-4">
 					<UserRows />
 				</div>
-				<div className="flex justify-center mt-4">
+				<div className="mt-4 flex justify-center">
 					<Button
 						onPress={addUser}
 						startContent={<MdAdd size={30} />}

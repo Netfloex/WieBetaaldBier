@@ -3,6 +3,7 @@ import { Checkbox } from "@nextui-org/checkbox"
 import { Popover, PopoverContent, PopoverTrigger } from "@nextui-org/popover"
 import { useCallback, useState } from "react"
 import { MdDelete } from "react-icons/md"
+import { useShallow } from "zustand/react/shallow"
 
 import useStore from "@hooks/useStore"
 
@@ -12,10 +13,9 @@ export const ClearAllUsersButton: FC = () => {
 	const [isOpen, setIsOpen] = useState(false)
 	const [clearAll, setClearAll] = useState(false)
 
-	const [userCount, clearUsers] = useStore((s) => [
-		s.users.length,
-		s.clearUsers,
-	])
+	const [userCount, clearUsers] = useStore(
+		useShallow((s) => [s.users.length, s.clearUsers]),
+	)
 
 	const clear = useCallback(() => {
 		clearUsers(clearAll)
@@ -43,7 +43,7 @@ export const ClearAllUsersButton: FC = () => {
 					return (
 						<div className="p-4">
 							<h3
-								className="text-lg font-bold mb-3"
+								className="mb-3 text-lg font-bold"
 								{...titleProps}
 							>
 								Weet je zeker dat je alle bieren en betalingen
@@ -57,7 +57,7 @@ export const ClearAllUsersButton: FC = () => {
 								>
 									Verwijder ook de gebruikerslijst
 								</Checkbox>
-								<div className="flex justify-end space-x-2 mt-4">
+								<div className="mt-4 flex justify-end space-x-2">
 									<Button onPress={clear} color="danger">
 										Verwijder
 									</Button>
