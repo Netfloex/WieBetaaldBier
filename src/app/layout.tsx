@@ -1,4 +1,4 @@
-import "@styles/global.scss"
+import "./global.css"
 
 import { Providers } from "./Providers"
 

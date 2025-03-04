@@ -3,7 +3,6 @@
 		"baseUrl": ".",
 		"paths": {
 			"@typings/*": ["src/typings/*"],
-			"@styles/*": ["src/styles/*"],
 			"@hooks/*": ["src/hooks/*"]
 		},
 		"target": "es5",

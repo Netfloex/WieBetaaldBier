@@ -1,7 +1,10 @@
 **
 
-!/next.config.js
+!/next.config.ts
+!/tailwind.config.ts
+!/postcss.config.js
 !/package.json
 !/src/**
 !/tsconfig.json
 !/yarn.lock
+!/public

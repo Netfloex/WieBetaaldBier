@@ -14,7 +14,7 @@ jobs:
             - name: Setup yarn and install dependencies
               uses: netfloex/actions/yarn@master
               with:
-                  node-version: 18.18.0
+                  node-version: 22.14.0
 
             - name: Check Types
               run: yarn typescript
@@ -23,7 +23,15 @@ jobs:
               run: yarn lint
 
     docker:
-        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                include:
+                    - os: ubuntu-latest
+                      arch: amd64
+                    - os: ubuntu-24.04-arm
+                      arch: arm64
+
+        runs-on: ${{ matrix.os }}
         needs: tests
 
         steps:
@@ -39,11 +47,86 @@ jobs:
                       type=semver,pattern=v{{major}}
                       type=raw,value=latest
 
-            - name: Build and push to docker hub
-              uses: netfloex/actions/docker@master
+            - name: Set up QEMU
+              uses: docker/setup-qemu-action@v3
+              if: inputs.setup_qemu == 'true'
+              with:
+                  platforms: ${{ inputs.platform }}
+
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v3
+
+            - name: Login to Docker Hub
+              uses: docker/login-action@v3
               with:
                   username: netfloex
-                  token: ${{ secrets.DOCKERHUB_TOKEN }}
-                  tags: ${{ steps.meta.outputs.tags }}
+                  password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+            - name: Build and push by digest
+              id: build
+              uses: docker/build-push-action@v5
+              with:
+                  platforms: ${{ inputs.platform }}
                   labels: ${{ steps.meta.outputs.labels }}
-                  platforms: linux/amd64,linux/arm64
+                  outputs: type=image,name=${{ inputs.registry_image }},push-by-digest=true,name-canonical=true,push=true
+
+                  cache-from: type=gha
+                  cache-to: type=gha,mode=max
+
+            - name: Export digest
+              run: |
+                  mkdir -p /tmp/digests
+                  digest="${{ steps.build.outputs.digest }}"
+                  touch "/tmp/digests/${digest#sha256:}"
+
+                  # Create platform variable with a / changed to - (e.g. linux/amd64 to linux-amd64)
+                  platform=${{ inputs.platform }}
+                  echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV
+
+            - name: Upload digest
+              uses: actions/upload-artifact@v4
+              with:
+                  name: digests-${{ env.PLATFORM_PAIR }}
+                  path: /tmp/digests/*
+                  if-no-files-found: error
+                  retention-days: 1
+    merge:
+        runs-on: ubuntu-latest
+        needs: docker
+        steps:
+            - name: Download digests
+              uses: actions/download-artifact@v4
+              with:
+                  path: /tmp/digests
+                  pattern: digests-*
+                  merge-multiple: true
+
+            - name: Docker meta
+              id: meta
+              uses: docker/metadata-action@v5
+              with:
+                  images: ${{ inputs.registry_image }}
+                  tags: |
+                      type=semver,pattern=v{{major}}.{{minor}}.{{patch}}
+                      type=semver,pattern=v{{major}}.{{minor}}
+                      type=semver,pattern=v{{major}}
+                      type=raw,value=latest
+
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v3
+
+            - name: Login to Docker Hub
+              uses: docker/login-action@v3
+              with:
+                  username: netfloex
+                  password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+            - name: Create manifest list and push
+              working-directory: /tmp/digests
+              run: |
+                  docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
+                    $(printf '${{ inputs.registry_image }}@sha256:%s ' *)
+
+            - name: Inspect image
+              run: |
+                  docker buildx imagetools inspect ${{ inputs.registry_image }}:${{ steps.meta.outputs.version }}
